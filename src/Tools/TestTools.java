@@ -34,9 +34,12 @@ public class TestTools {
 //		}	
 //	   Fish f = d.getFishByName("台湾马苏麻哈");
 //	   System.out.println(f.getLocalNameByString());
-Vector<List> l = new ListDao().getListByListName("形");
-for(List x:l){
+Vector<Family> l = new FamilyDao().getFamilyByPage("鲑形目", 1, 30);
+for(Family x:l){
 System.out.println(x.getName());
 }
+String encoding = System.getProperty("file.encoding");
+System.out.println(encoding);
+
 }
 }

@@ -8,10 +8,10 @@
 <title>Fisher
 </title>
 <% 
+request.setCharacterEncoding("UTF-8");
 String listName;
-
 if(request.getParameter("list")!=null){
-listName = request.getParameter("list");
+listName = new String(request.getParameter("list").getBytes("iso-8859-1"),"utf-8");
 session.setAttribute("listName", listName);
 }
 else{

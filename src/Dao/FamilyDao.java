@@ -29,6 +29,7 @@ public class FamilyDao {
 	}
 	  
 	public Vector<Family> getFamilyByPage(String listName,int page,int pageNum){
+		   
 		   Vector<Family> v = new Vector<>();
 		   try{
 			    Connection con = new DataBase().getConnection();
@@ -42,6 +43,7 @@ public class FamilyDao {
 		    	while(result.next()){
 		    		family = new Family();
 		    		family.setName(result.getString("family"));
+		    		System.out.println(family.getName());
 		    		v.add(family);
 		    	}
 		    	return v;
