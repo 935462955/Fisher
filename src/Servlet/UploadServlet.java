@@ -48,6 +48,7 @@ public class UploadServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 	
 		String savePath = this.getServletContext().getRealPath("img");
+		
 		System.out.println(savePath);
 		File saveFileDir = new File(savePath);
 		if (!saveFileDir.exists()) {
