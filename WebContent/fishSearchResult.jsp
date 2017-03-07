@@ -6,16 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Fisher</title>
-<% 
-String categoryName;
-if(request.getParameter("categoryName")!=null){
-	categoryName = request.getParameter("categoryName");
-    session.setAttribute("categoryName", categoryName);
-}
-else{
-	categoryName = (String)session.getAttribute("categoryName");
-}
-%>
 </head>
 <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="bootstrap-3.3.7-dist/js/jquery-3.1.1.js"></script>
@@ -36,11 +26,6 @@ else{
     <div class="col-md-12 column">
       <ul class="breadcrumb">
         <li> <a href="main.jsp?page=1">首页</a> </li>
-         <% 
-         out.println("<li><a href=\"family.jsp?page=1\">"+session.getAttribute("listName")+"</a></li>");
-         out.println("<li><a href=\"category.jsp?page=1\">"+session.getAttribute("familyName")+"</a></li>");
-         out.println("<li class=\"active\"><a href=\"fishMenu.jsp\">"+categoryName+"</a></li>");
-         %>
       </ul>
        <form class="form1" method="get" action="SearchServlet">
         <div class="input-group input-group-lg">
@@ -70,7 +55,7 @@ else{
       </form>
     </div>
   </div>
-  <% Vector<Fish> f = new FishDao().getFishsByCate(categoryName);
+  <% Vector<Fish> f = (Vector<Fish>)request.getSession().getAttribute("searchReturn");
      Fish fish = null;
      for(int i = 0 ; i < f.size() ; i++){
     	 if(f.get(i) != null){

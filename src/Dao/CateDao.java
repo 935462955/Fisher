@@ -63,7 +63,7 @@ public class CateDao {
 			  Category category = null;
 			  while(result.next()){
 				  category =new Category();
-				  category.setName(result.getString("list"));
+				  category.setName(result.getString("category"));
 				  v.add(category);
 			  }
 			  return v;

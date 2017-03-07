@@ -3,6 +3,7 @@ package Dao;
 import java.sql.*;
 import java.util.Vector;
 
+import entity.Category;
 import entity.Family;
 import entity.Fish;
 
@@ -182,5 +183,36 @@ public class FishDao {
     		   e.printStackTrace();
     		   return s;
     	   }
+       }
+       public Vector<Fish> getFishByKeyWord(String keyWord){
+    	   Vector<Fish> v = new Vector<>();
+ 		  try{
+ 			  Connection con = new DataBase().getConnection();
+ 			  String sql ="  select * from fish where contains(name,?)>0 or contains(englishname,?)>0 or contains(localname,?)>0";
+ 			  PreparedStatement pre = con.prepareStatement(sql);
+ 			  pre.setString(1, keyWord);
+ 			  pre.setString(2, "%"+keyWord+"%");
+ 			  pre.setString(3, keyWord);
+ 			  ResultSet result = pre.executeQuery();
+ 			  Fish fish = null;
+ 			  while(result.next()){
+ 				 fish =new Fish();
+ 				fish.setName(result.getString("name"));
+   	 	    	fish.setLocalName(result.getString("localname").split(","));//返回一条包含所有别名的字符串,通过逗号分隔为数组
+   	 	    	fish.setEnglishName(result.getString("englishname"));
+   	 	    	fish.setOrigin(result.getString("origin"));
+   	 	    	fish.setIntroduction(result.getString("introduction"));
+   	 	    	fish.setPicture(result.getString("picture"));
+   	 	    	fish.setList(result.getString("list"));
+   	 	    	fish.setFamily(result.getString("family"));
+   	 	    	fish.setCategory(result.getString("category"));
+ 				  v.add(fish);
+ 			  }
+ 			  return v;
+ 		  }
+ 		  catch(Exception e){
+ 			  e.printStackTrace();
+ 			  return v;
+ 		  }  	   
        }
 }

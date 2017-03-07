@@ -43,11 +43,11 @@ else{
          out.println("<li class=\"active\"><a href=\"fishDetail.jsp\">"+fishName+"</a></li>");
          %>
       </ul>
-      <form class="form1">
+       <form class="form1" method="get" action="SearchServlet">
         <div class="input-group input-group-lg">
         <div class="input-group-btn">
                         <button type="button" class="btn btn-default 
-                        dropdown-toggle" data-toggle="dropdown" id="btn-type" value="fish" name="btn-type">鱼名
+                        dropdown-toggle" data-toggle="dropdown" id="btn-type" value="fish" >鱼名
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
@@ -63,9 +63,10 @@ else{
                             
                         </ul>
                     </div>
-          <input type="text" class="form-control" placeholder="通过关键字查找">
+          <input type="hidden" name="type" id="typeId">
+          <input type="text" class="form-control" placeholder="通过关键字查找" name="content">
           <span class="input-group-btn ">
-          <button class="btn btn-primary" type="button">搜索</button>
+          <button class="btn btn-primary" type="button" onClick="submit1()">搜索</button>
           </span> </div>
       </form>
     </div>
