@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="Dao.FishDao" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,7 +21,7 @@ margin:10px 10px;
 }
 </style>
 <script>
-function change(x){
+function change(x){//根据所点击的字母通过AJAX查询数据库中首字拼音等于该字母的数据
 	
 $("#ul1 li.active").removeClass("active");
 x.setAttribute("class","active");
@@ -118,7 +119,32 @@ function change2(x){
 	  xmlhttp.send();
 
 	}
-	
+function beforeSubmit(){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    { 
+		
+	    var x=xmlhttp.responseText;
+	    if(x == "false")
+	    	alert("数据已存在！");
+	    else{
+	    	$("#form1").submit();
+	    }
+	    }
+	  }
+	  xmlhttp.open("GET","CheckDuplicate?value="+$("#fishName").val()+"&type=fish",true);
+	  xmlhttp.send();
+}	
 function fill1(x){
 	var val = x.innerHTML;
 	$("#family").attr("value",val);
@@ -178,7 +204,7 @@ function fill2(x){
 			</ul>
 		</div>
 		<div class="col-md-9 column">
-			<form role="form" action="UploadServlet" enctype="multipart/form-data" method="post">
+			<form role="form" id="form1" action="UploadServlet" enctype="multipart/form-data" method="post">
                  <div class="form-group">
 					 <label for="list">目</label><input class="form-control" name="list" id="list" type="text" readonly = "readonly"/>
                       <a class="btn" id="modal-513628" role="button" href="#modal-container-513628" data-toggle="modal">点击浏览</a>
@@ -496,7 +522,7 @@ function fill2(x){
 				</div>
 			</div>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">名称</label><input class="form-control" name="name" type="text" />
+					 <label for="exampleInputEmail1">名称</label><input class="form-control" id="fishName" name="name" type="text" />
 				</div>
 				<div class="form-group">
 					 <label for="exampleInputPassword1">别名(若有多个别名请用逗号隔开)</label><input class="form-control" name="localName" type="text" />
@@ -518,7 +544,7 @@ function fill2(x){
 				</div>
 				<div class="checkbox">
 					 <label><input type="checkbox" />Check me out</label>
-				</div> <button class="btn btn-default" type="submit">Submit</button>
+				</div> <input type="button" value="提交" onClick="beforeSubmit()">
 			</form>
 		</div>
 	</div>
