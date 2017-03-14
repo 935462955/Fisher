@@ -137,8 +137,20 @@ function beforeSubmit(){
 	    var x=xmlhttp.responseText;
 	    if(x == "false")
 	    	alert("数据已存在！");
+	    else if(x == "")alert("名称不能为空!");
+	    else if($("#list").val() =="") alert("目不能为空!");
+	    else if($("#family").val() =="") alert("科不能为空!");
+	    else if($("#category").val() =="") alert("属不能为空!");
 	    else{
-	    	$("#form1").submit();
+	    	if($("#localName").val() =="")
+	    		$("#localName").val("无");
+	    	if($("#EnglishName").val() =="")
+	    		$("#EnglishName").val("无");
+	    	if($("#origin").val() == "")
+	    		$("#origin").val("无");
+	    	if($("#introduction").val() == "")
+	    		$("#introduction").val("无");
+	    	 $("#form1").submit();
 	    }
 	    }
 	  }
@@ -174,7 +186,7 @@ function fill2(x){
 		<div class="col-md-3 column">
 			<ul class="nav nav-stacked nav-pills">
 				<li class="active">
-					 <a href="#">首页</a>
+					 <a href="#">添加品种</a>
 				</li>
 				<li>
 					 <a href="#">简介</a>
@@ -525,16 +537,16 @@ function fill2(x){
 					 <label for="exampleInputEmail1">名称</label><input class="form-control" id="fishName" name="name" type="text" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">别名(若有多个别名请用逗号隔开)</label><input class="form-control" name="localName" type="text" />
+					 <label for="exampleInputPassword1">别名(若有多个别名请用逗号隔开)</label><input class="form-control" id="localName" name="localName" type="text"  />
 				</div>
                 <div class="form-group">
-					 <label for="exampleInputEmail1">英文名</label><input class="form-control" name="EnglishName" type="text" />
+					 <label for="exampleInputEmail1">英文名</label><input class="form-control" id="EnglishName" name="EnglishName" type="text" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">发源地</label><input class="form-control" name="origin" type="text"  />
+					 <label for="exampleInputEmail1">发源地</label><input class="form-control" id="origin" name="origin" type="text"  />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">介绍</label><textarea class="form-control" name="introduction"></textarea>
+					 <label for="exampleInputEmail1">介绍</label><textarea class="form-control" id="introduction" name="introduction"></textarea>
 				</div>
 				<div class="form-group">
 					 <label for="exampleInputFile">图片</label><input name="file1" type="file" />

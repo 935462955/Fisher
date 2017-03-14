@@ -36,6 +36,7 @@ public class FindListPY extends HttpServlet {
         response.setContentType("text/html");
         String type = request.getParameter("type");
         if(type.equals("list")){
+        	
         FishDao fishdao = new FishDao();
         String s = fishdao.getListByPinYin(request.getParameter("PY"));
         PrintWriter out = response.getWriter();

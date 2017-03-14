@@ -21,14 +21,24 @@ public class FishDao {
 	    	while(result.next()){
 	    	fish = new Fish();
 	    	fish.setName(result.getString("name"));
-	    	fish.setLocalName(result.getString("localname").split(","));//返回一条包含所有别名的字符串,通过逗号分隔为数组
-	    	fish.setEnglishName(result.getString("englishname"));
-	    	fish.setOrigin(result.getString("origin"));
-	    	fish.setIntroduction(result.getString("introduction"));
-	    	fish.setPicture(result.getString("picture"));
-	    	fish.setList(result.getString("list"));
-	    	fish.setFamily(result.getString("family"));
-	    	fish.setCategory(result.getString("category"));
+	 	    	if(result.getString("localname")!=null)
+	 	    	fish.setLocalName(result.getString("localname").split(","));//返回一条包含所有别名的字符串,通过逗号分隔为数组
+	 	    	else fish.setLocalName(new String []{" "});
+	 	    	if(result.getString("englishname")!=null)
+	 	    	fish.setEnglishName(result.getString("englishname"));
+	 	    	else fish.setEnglishName(" ");
+	 	        if(result.getString("origin")!=null)
+	 	    	fish.setOrigin(result.getString("origin"));
+	 	        else fish.setOrigin(" ");
+	 	        if(result.getString("introduction")!=null)
+	 	    	fish.setIntroduction(result.getString("introduction"));
+	 	        else fish.setIntroduction(" ");
+	 	        if(result.getString("picture")!=null)
+	 	    	fish.setPicture(result.getString("picture"));
+	 	        else fish.setPicture("img\timg.gif");
+	 	    	fish.setList(result.getString("list"));
+	 	    	fish.setFamily(result.getString("family"));
+	 	    	fish.setCategory(result.getString("category"));
 	    	}
 	    	if(result != null)
 	    		result.close();
@@ -58,11 +68,21 @@ public class FishDao {
    	    		while(result.next()){
    	 	    	fish = new Fish();
    	 	    	fish.setName(result.getString("name"));
+   	 	    	if(result.getString("localname")!=null)
    	 	    	fish.setLocalName(result.getString("localname").split(","));//返回一条包含所有别名的字符串,通过逗号分隔为数组
+   	 	    	else fish.setLocalName(new String []{" "});
+   	 	    	if(result.getString("englishname")!=null)
    	 	    	fish.setEnglishName(result.getString("englishname"));
+   	 	    	else fish.setEnglishName(" ");
+   	 	        if(result.getString("origin")!=null)
    	 	    	fish.setOrigin(result.getString("origin"));
+   	 	        else fish.setOrigin(" ");
+   	 	        if(result.getString("introduction")!=null)
    	 	    	fish.setIntroduction(result.getString("introduction"));
+   	 	        else fish.setIntroduction(" ");
+   	 	        if(result.getString("picture")!=null)
    	 	    	fish.setPicture(result.getString("picture"));
+   	 	        else fish.setPicture("img\timg.gif");
    	 	    	fish.setList(result.getString("list"));
    	 	    	fish.setFamily(result.getString("family"));
    	 	    	fish.setCategory(result.getString("category"));

@@ -8,6 +8,7 @@
   <title>消息提示</title>
   </head>
  <body>
+     成功
      ${message }
      ${path }
      
@@ -20,5 +21,24 @@
      String img = "img\\"+request.getParameter("path");
      out.println(list+family+category+img);
      %>
+     <p>
+   如果长时间未响应请点击<a href="addFish.jsp">返回</a>
+   </p>
+     <span id="span1"></span><span>秒后返回  </span>
+ <script type="text/javascript">
+ var i=5;
+ span = document.getElementById("span1");
+ function a(){
+ span.innerHTML=i;
+ i--;
+ if(i>0){
+ setTimeout(a,1000);
+ }
+ else{
+ location.href="addFish.jsp";
+ }
+ } 
+ a();
+ </script> 
  </body>
 	 </html>

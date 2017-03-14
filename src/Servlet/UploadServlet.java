@@ -28,6 +28,7 @@ import entity.Fish;
  */
 @WebServlet("/UploadServlet")
 public class UploadServlet extends HttpServlet {
+	public final String DEFAULTPATH = "img\no.jpg";
 	private static final long serialVersionUID = 1L;
 	private String Ext_Name = "jpg,png,bmp";
 
@@ -206,7 +207,7 @@ public class UploadServlet extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			FishDao fishdao = new FishDao();
-			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,"img\\"+saveFileName,list,family,category);
+			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,saveFileName == ""?DEFAULTPATH:"img\\"+saveFileName,list,family,category);
 			fishdao.insertFish(fish);
 			request.setAttribute("message", message);
 			request.setAttribute("path","img\\"+saveFileName);
