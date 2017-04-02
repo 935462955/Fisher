@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Dao.CateDao;
+import Dao.FamilyDao;
 import Dao.FishDao;
+import Dao.ListDao;
 
 /**
  * Servlet implementation class CheckDuplicate
@@ -42,7 +45,37 @@ public class CheckDuplicate extends HttpServlet {
         	if(f.getFishByName(value) != null)
         		s = "false";
         	else s = "true";
-        	System.out.println(s+" "+value);
+        	//System.out.println(s+" "+value);
+        	PrintWriter out = response.getWriter();
+            out.write(s);
+            out.close();
+        }
+        else if(type.equals("list")){
+        	ListDao l = new ListDao();
+        	if(l.IsInList(value)){
+        		s = "false";
+        	}
+        	else s = "true" ;
+        	PrintWriter out = response.getWriter();
+            out.write(s);
+            out.close();
+        }
+        else if(type.equals("family")){
+        	FamilyDao familyDao = new FamilyDao();
+        	if(familyDao.IsInFamily(value)){
+        		s = "false";
+        	}
+        	else s = "true";
+        	PrintWriter out = response.getWriter();
+            out.write(s);
+            out.close();
+        }
+        else if(type.equals("category")){
+        	CateDao cateDao = new CateDao();
+        	if(cateDao.IsInCategory(value)){
+        		s = "false";
+        	}
+        	else s = "true";
         	PrintWriter out = response.getWriter();
             out.write(s);
             out.close();

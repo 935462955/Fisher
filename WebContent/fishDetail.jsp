@@ -8,12 +8,18 @@
 <title>Fisher</title>
 <%
 String fishName;
+if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("fishName")!=null){
 	fishName = request.getParameter("fishName");
     session.setAttribute("fishName", fishName);
 }
 else{
-	fishName = (String)session.getAttribute("fishName");
+	if(session.getAttribute("fishName") != null)
+		fishName = (String)session.getAttribute("fishName");
+		else{
+			fishName = "";
+		  response.sendRedirect("main.jsp");
+		}
 }
 %>
 </head>

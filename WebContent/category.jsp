@@ -9,12 +9,18 @@
 </title>
 <% 
 String familyName;
+if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("familyName")!=null){
 familyName = request.getParameter("familyName");
 session.setAttribute("familyName", familyName);
 }
 else{
-	familyName = (String)session.getAttribute("familyName");
+	if(session.getAttribute("familyName") != null)
+		familyName = (String)session.getAttribute("familyName");
+		else{
+		 familyName = "";
+		  response.sendRedirect("main.jsp");
+		}
 }
 int currentPage;
 if(request.getParameter("page") == null) 

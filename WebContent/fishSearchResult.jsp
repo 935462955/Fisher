@@ -67,6 +67,7 @@
     	 out.println(fish.getIntroduction());
     	 out.println("</p>");
     	 out.println("<p><a href=\"fishDetail.jsp?fishName="+fish.getName()+"\">查看详情>></a></p>");
+    	 out.println("</div>");
     	 }
     	 }
   %>

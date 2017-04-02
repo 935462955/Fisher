@@ -15,7 +15,13 @@ listName = request.getParameter("list");
 session.setAttribute("listName", listName);
 }
 else{
+	if(session.getAttribute("listName") != null)
 	listName = (String)session.getAttribute("listName");
+	else{
+	 listName = "";
+	  response.sendRedirect("main.jsp");
+	}
+		
 }
 int currentPage;
 if(request.getParameter("page") == null) 
@@ -50,6 +56,7 @@ else sumPage = sumFamily/PAGENUM + 1;
         <% 
          out.println("<li class=\"active\"><a href=\"family.jsp?page=1\">"+listName+"</a></li>");
          %>
+         
       </ul>
       <form class="form1" method="get" action="SearchServlet">
         <div class="input-group input-group-lg">

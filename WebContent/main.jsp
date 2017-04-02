@@ -11,14 +11,50 @@
    else
    currentPage = Integer.parseInt(request.getParameter("page").toString());
 
-   
-   int sumList = new ListDao().getSumListNum();
+   ListDao listDao = new ListDao();
+   int sumList = listDao.getSumListNum();
    final int PAGENUM = 30;
    final int COWNUM = 3;
    int sumPage;
    if(sumList%PAGENUM == 0) sumPage = sumList/PAGENUM;
    else sumPage = sumList/PAGENUM + 1;
 %>
+<script>
+function Del(x){
+    var parent = x.parentNode;
+    var childNode = parent.firstChild;
+    
+    var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    { 
+		
+	    var x=xmlhttp.responseText;
+	    if(x == "false")
+	    	alert("删除失败!");
+	    else{
+	    	parent.remove();
+	    }
+	    
+	    }
+	  }
+	  xmlhttp.open("GET","deleteWork?deleteValue="+childNode.innerHTML+"&deleteType=list",true);
+	  xmlhttp.send();
+}	
+	
+
+
+
+</script>
 <title>Fisher</title>
 </head>
 <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -66,12 +102,20 @@
   </div>
   <% Vector <List>list = new ListDao().getListByPage(currentPage, PAGENUM); %>
   <div class="row clearfix">
+  <div class="col-md-12 column">
+  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
+  <button style="margin:30px 10px 0px 0px;" type="button" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
+  </div>
+  </div>
+  <div class="row clearfix">
     <div class="col-md-4 column">
       <div class="page-header">
       <%for(int i = 0; i<list.size(); i+=COWNUM) //i表示数组的下标
       {
     	  if(list.get(i)!=null){
-    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"+list.get(i).getName()+"</a></h2>");
+    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"
+    		    	  +list.get(i).getName()+"</a><button style=\"display:none\" type=\"button\" onClick=\"Del(this)\" class=\"btn btn-danger btn-xs btn-delete\">删除</button>"+
+    		    	  "<button style=\"display:none\" type=\"button\" class=\"btn btn-primary btn-xs btn-update\">更改</button></h2>");
     	  }
     	  else break;
       }
@@ -83,7 +127,9 @@
        <%for(int i = 1; i<list.size(); i+=COWNUM) 
       {
     	  if(list.get(i)!=null){
-    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"+list.get(i).getName()+"</a></h2>");
+    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"
+    		    	  +list.get(i).getName()+"</a><button style=\"display:none\" type=\"button\" onClick=\"Del(this)\" class=\"btn btn-danger btn-xs btn-delete\">删除</button>"+
+    		    	  "<button style=\"display:none\" type=\"button\" class=\"btn btn-primary btn-xs btn-update\">更改</button></h2>");
     	  }
     	  else break;
       }
@@ -95,7 +141,10 @@
          <%for(int i = 2; i<list.size(); i+=COWNUM) 
       {
     	  if(list.get(i)!=null){
-    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"+list.get(i).getName()+"</a></h2>");
+    		  out.println("<h2><a href=\"family.jsp?page=1&list="+list.get(i).getName()+"\">"
+    		    	  +list.get(i).getName()+"</a><button style=\"display:none\" type=\"button\" onClick=\"Del(this)\" class=\"btn btn-danger btn-xs btn-delete\">删除</button>"+
+    		    	  "<button style=\"display:none\" type=\"button\" class=\"btn btn-primary btn-xs btn-update\">更改</button></h2>");
+    	      
     	  }
     	  else break;
       }
@@ -105,7 +154,7 @@
   </div>
   <div class="row clearfix">
     <div class="col-md-12 column">
-      <ul class="page pagination">
+      <ul class="page pagination">	
       <%
 int left = currentPage-2 > 0 ? currentPage-2 : 1;
 int right = currentPage+2 < sumPage ? currentPage+2 : sumPage;

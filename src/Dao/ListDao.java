@@ -70,4 +70,87 @@ public class ListDao {
 		  return v;
 	  }
   }
+  
+  public boolean IsInList(String list){
+		 boolean contain = false; 
+		 try{
+			  Connection con = new DataBase().getConnection();
+			  String sql ="select list from list where list = ?";
+			  PreparedStatement pre = con.prepareStatement(sql);
+			  pre.setString(1, list);
+			  ResultSet result = pre.executeQuery();
+			  while(result.next()){
+				  contain = true;
+			  }
+			 return contain;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return contain;
+		  }
+	 }
+  
+  public boolean InsertNewList(String newList){
+	  Connection con = null;
+	  PreparedStatement pre = null;
+	  try{
+		  con = new DataBase().getConnection();
+		  String sql = "insert into list values(?)";
+		  pre = con.prepareStatement(sql);
+		  pre.setString(1, newList);
+		  pre.executeUpdate();
+		  return true;
+	  }
+	  catch(Exception e){
+		  e.printStackTrace();
+		  return false;
+	  }
+	  finally{
+		  try {
+	  
+		  if(pre != null){
+ 			pre.close();
+			
+		  }
+		  if(con != null){
+			  con.close();
+		  }
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+		  }
+	  }
+  }
+  
+  public boolean DeleteList(String List){
+	  Connection con = null;
+	  PreparedStatement pre = null;
+	  try{
+		  con = new DataBase().getConnection();
+		  String sql = "delete from list where list=?";
+		  pre = con.prepareStatement(sql);
+		  pre.setString(1, List);
+		  pre.executeUpdate();
+		  return true;
+	  }
+	  catch(Exception e){
+		  e.printStackTrace();
+		  return false;
+	  }
+	  finally{
+		  try {
+	  
+		  if(pre != null){
+ 			pre.close();
+			
+		  }
+		  if(con != null){
+			  con.close();
+		  }
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+		  }
+	  }
+  }
 }

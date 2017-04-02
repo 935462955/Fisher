@@ -8,12 +8,18 @@
 <title>Fisher</title>
 <% 
 String categoryName;
+if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("categoryName")!=null){
 	categoryName = request.getParameter("categoryName");
     session.setAttribute("categoryName", categoryName);
 }
 else{
-	categoryName = (String)session.getAttribute("categoryName");
+	if(session.getAttribute("categoryName") != null)
+		categoryName = (String)session.getAttribute("categoryName");
+		else{
+			categoryName = "";
+		  response.sendRedirect("main.jsp");
+		}
 }
 %>
 </head>
@@ -82,6 +88,7 @@ else{
     	 out.println(fish.getIntroduction());
     	 out.println("</p>");
     	 out.println("<p><a href=\"fishDetail.jsp?fishName="+fish.getName()+"\">查看详情>></a></p>");
+    	 out.println("</div>");
     	 }
     	 }
   %>

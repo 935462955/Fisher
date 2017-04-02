@@ -75,4 +75,56 @@ public class FamilyDao {
 			  return v;
 		  }
 	  }
+	 
+	 public boolean IsInFamily(String family){
+		 boolean contain = false; 
+		 try{
+			  Connection con = new DataBase().getConnection();
+			  String sql ="select family from family where family = ?";
+			  PreparedStatement pre = con.prepareStatement(sql);
+			  pre.setString(1, family);
+			  ResultSet result = pre.executeQuery();
+			  while(result.next()){
+				  contain = true;
+			  }
+			 return contain;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return contain;
+		  }
+	 }
+	 
+	  public boolean InsertNewFamily(String newList,String newFamily){
+		  Connection con = null;
+		  PreparedStatement pre = null;
+		  try{
+			  con = new DataBase().getConnection();
+			  String sql = "insert into family values(?,?)";
+			  pre = con.prepareStatement(sql);
+			  pre.setString(1, newList);
+			  pre.setString(2,newFamily);
+			  pre.executeUpdate();
+			  return true;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return false;
+		  }
+		  finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	  }
 }
