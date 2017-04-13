@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -48,8 +49,8 @@ public class UploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	
-		//String savePath = this.getServletContext().getRealPath("img");
-		  String savePath = "C:\\Users\\liu\\Pictures\\fisher";
+		  String savePath = this.getServletContext().getRealPath("img");
+		 // String savePath = "C:\\Users\\liu\\Pictures\\fisher";
 		System.out.println(savePath);
 		File saveFileDir = new File(savePath);
 		if (!saveFileDir.exists()) {
@@ -102,7 +103,7 @@ public class UploadServlet extends HttpServlet {
 				return;
 			}
 			// 设置上传单个文件的最大值
-			upload.setFileSizeMax(1024 * 1024 * 1);// 1M
+			upload.setFileSizeMax(1024 * 1024 * 5);// 1M
 			// 设置上传文件总量的最大值，就是本次上传的所有文件的总和的最大值
 			upload.setSizeMax(1024 * 1024 * 10);// 10M
 
@@ -161,7 +162,7 @@ public class UploadServlet extends HttpServlet {
 					// 检查文件大小
 					if (item.getSize() == 0)
 						continue;
-					if (item.getSize() > 1024 * 1024 * 1) {
+					if (item.getSize() > 1024 * 1024 * 5) {
 						System.out.println("上传文件大小：" + item.getSize());
 						message = message + "文件：" + fileName + "，上传文件大小超过限制大小：" + upload.getFileSizeMax() + "<br/>";
 						break;
@@ -207,7 +208,7 @@ public class UploadServlet extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			FishDao fishdao = new FishDao();
-			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,saveFileName == ""?DEFAULTPATH:"C:\\Users\\liu\\Pictures\\fisher\\"+saveFileName,list,family,category);
+			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,saveFileName == ""?DEFAULTPATH:savePath+"\\"+saveFileName,list,family,category);
 			fishdao.insertFish(fish);
 			request.setAttribute("message", message);
 			request.setAttribute("path","img\\"+saveFileName);
@@ -228,8 +229,9 @@ public class UploadServlet extends HttpServlet {
 	
 	private String makeFileName(String fileName) {
 		         // 为防止文件覆盖的现象发生，要为上传文件产生一个唯一的文件名
-		         return UUID.randomUUID().toString() + "_" + fileName.replaceAll("%", "_");
-		 
+		         return UUID.randomUUID().toString() + "_" + fileName.replace('%', '_');
+		        //Random r = new Random(25);
+		        //return  r.nextInt(1000)+fileName;
 		     }
 
 

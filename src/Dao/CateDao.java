@@ -125,4 +125,69 @@ public class CateDao {
 			  }
 		  }
 	}
+	
+	 public boolean DeleteCate(String category){
+		  Connection con = null;
+		  PreparedStatement pre = null;
+		  try{
+			  con = new DataBase().getConnection();
+			  String sql = "delete from category where category=?";
+			  pre = con.prepareStatement(sql);
+			  pre.setString(1,category);
+			  pre.executeUpdate();
+			  return true;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return false;
+		  }
+		  finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	  }
+	  
+	  public boolean UpdateCate(String newCategory,String oldCategory){
+		  Connection con = null;
+		  PreparedStatement pre = null;
+		  try{
+			  con = new DataBase().getConnection();
+			  String sql = "update category set category = ? where category = ?";
+			  pre = con.prepareStatement(sql);
+			  pre.setString(1, newCategory);
+			  pre.setString(2, oldCategory);
+			  pre.executeUpdate();
+			  return true;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return false;
+		  }
+		  finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	  }
 }

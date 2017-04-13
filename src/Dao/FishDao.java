@@ -235,4 +235,36 @@ public class FishDao {
  			  return v;
  		  }  	   
        }
+       
+       public boolean DeleteFish(String fishName){
+    		  Connection con = null;
+    		  PreparedStatement pre = null;
+    		  try{
+    			  con = new DataBase().getConnection();
+    			  String sql = "delete from fish where name=?";
+    			  pre = con.prepareStatement(sql);
+    			  pre.setString(1, fishName);
+    			  pre.executeUpdate();
+    			  return true;
+    		  }
+    		  catch(Exception e){
+    			  e.printStackTrace();
+    			  return false;
+    		  }
+    		  finally{
+    			  try {
+    		  
+    			  if(pre != null){
+    	 			pre.close();
+    				
+    			  }
+    			  if(con != null){
+    				  con.close();
+    			  }
+    			  }
+    			  catch(Exception e){
+    				  e.printStackTrace();
+    			  }
+    		  }
+    	  }
 }

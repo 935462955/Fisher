@@ -13,11 +13,11 @@
 <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script src="bootstrap-3.3.7-dist/js/fisherJS.js"></script>
 <link href="bootstrap-3.3.7-dist/css/fisherStyle.css" rel="stylesheet">
-<body>
-<div class="container">
-  <div>
-    <h1>淡水鱼百科</h1>
+<body style="background-image:url(img/background.gif);">
+<div style="width:900px;margin:10px auto;  ">
+    <img src="img/title.png"/>
   </div>
+<div class="container" style="margin:0 auto; width:900px; background:#fff; border-radius:15px;">
   <div class="path row clearfix">
     <div class="col-md-12 column">
       <ul class="breadcrumb">
@@ -51,6 +51,7 @@
       </form>
     </div>
   </div>
+  <div class="row clearfix" style="margin-top:10px; text-align:center;">
 <% int currentPage;
    if(request.getParameter("page") == null) 
    currentPage = 1;
@@ -68,7 +69,7 @@
 	   if(sumList%PAGENUM == 0) sumPage = sumList/PAGENUM;
 	   else sumPage = sumList/PAGENUM + 1;
 	   %>
-	   <div class="row clearfix">
+	   
     <div class="col-md-4 column">
       <div class="page-header">
       <%
@@ -109,30 +110,7 @@
       }
       %>
       </div>
-    </div>
-  </div>
-  <div class="row clearfix">
-    <div class="col-md-12 column">
-      <ul class="page pagination">
-      <%
-int left = currentPage-2 > 0 ? currentPage-2 : 1;
-int right = currentPage+2 < sumPage ? currentPage+2 : sumPage;
-out.println("<li><a href=\"SearchResult.jsp?page=1&type="+type+"\">&laquo;</a></li>");
-for(int i = left; i<=right; i++){
-	if(i == currentPage){
-		out.println("<li class=\"active\"><a href=\"SearchResult.jsp?page="+i+"&type="+type+"\">"+i+"</a></li>");
-	}
-	else
-	out.println("<li><a href=\"SearchResult.jsp?page="+i+"&type="+type+"\">"+i+"</a></li>");
-}
-out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&raquo;</a></li>");
-%>
-       
-      </ul>
-    </div>
-  </div>
-</div>
-	   
+    </div>	   
    <% }
    else if(type.equals("family")){//传来的是Family
 	   v = (Vector<Family>)request.getSession().getAttribute("searchReturn");
@@ -141,7 +119,6 @@ out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&ra
 		   if(sumFamily%PAGENUM == 0) sumPage = sumFamily/PAGENUM;
 		   else sumPage = sumFamily/PAGENUM + 1;
 		   %>
-		   <div class="row clearfix">
 	    <div class="col-md-4 column">
 	      <div class="page-header">
 	      <%
@@ -183,37 +160,15 @@ out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&ra
 	      %>
 	      </div>
 	    </div>
-	  </div>
-	  <div class="row clearfix">
-	    <div class="col-md-12 column">
-	      <ul class="page pagination">
-	      <%
-	int left = currentPage-2 > 0 ? currentPage-2 : 1;
-	int right = currentPage+2 < sumPage ? currentPage+2 : sumPage;
-	out.println("<li><a href=\"SearchResult.jsp?page=1&type="+type+"\">&laquo;</a></li>");
-	for(int i = left; i<=right; i++){
-		if(i == currentPage){
-			out.println("<li class=\"active\"><a href=\"SearchResult.jsp?page="+i+"&type="+type+"\">"+i+"</a></li>");
-		}
-		else
-		out.println("<li><a href=\"SearchResult.jsp?page="+i+"&type="+type+"\">"+i+"</a></li>");
-	}
-	out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&raquo;</a></li>");
-	%>
-	</ul>
-    </div>
-  </div>
-</div>
 	<% 
    }
-   else if(type.equals("category")) {
+   else {
 	    v = (Vector<Category>)request.getSession().getAttribute("searchReturn");
 	  int  sumCat = v.size();
 	  int startNum = (currentPage - 1) * PAGENUM;
 	   if(sumCat%PAGENUM == 0) sumPage = sumCat/PAGENUM;
 	   else sumPage = sumCat/PAGENUM + 1;
 	   %>
-	   <div class="row clearfix">
    <div class="col-md-4 column">
      <div class="page-header">
      <%
@@ -255,11 +210,14 @@ out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&ra
      %>
      </div>
    </div>
- </div>
- <div class="row clearfix">
-   <div class="col-md-12 column">
-     <ul class="page pagination">
-     <%
+  <%
+   }
+   %>
+</div>
+  <div class="row clearfix" >
+    <div class="col-md-12 column">
+      <ul class="page pagination">
+      <%
 int left = currentPage-2 > 0 ? currentPage-2 : 1;
 int right = currentPage+2 < sumPage ? currentPage+2 : sumPage;
 out.println("<li><a href=\"SearchResult.jsp?page=1&type="+type+"\">&laquo;</a></li>");
@@ -271,12 +229,13 @@ for(int i = left; i<=right; i++){
 	out.println("<li><a href=\"SearchResult.jsp?page="+i+"&type="+type+"\">"+i+"</a></li>");
 }
 out.println("<li><a href=\"SearchResult.jsp?page="+sumPage+"&type="+type+"\">&raquo;</a></li>");
-   }
 %>
-  </ul>
+       
+      </ul>
     </div>
   </div>
 </div>
+<span style="text-align:center; display:block; width:900px;margin:50px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
 </body>
 
 </html>

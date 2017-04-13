@@ -127,4 +127,69 @@ public class FamilyDao {
 			  }
 		  }
 	  }
+	  
+	  public boolean DeleteFamily(String family){
+		  Connection con = null;
+		  PreparedStatement pre = null;
+		  try{
+			  con = new DataBase().getConnection();
+			  String sql = "delete from family where family=?";
+			  pre = con.prepareStatement(sql);
+			  pre.setString(1,family);
+			  pre.executeUpdate();
+			  return true;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return false;
+		  }
+		  finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	  }
+	  
+	  public boolean UpdateFamily(String newFamily,String oldFamily){
+		  Connection con = null;
+		  PreparedStatement pre = null;
+		  try{
+			  con = new DataBase().getConnection();
+			  String sql = "update family set family = ? where family = ?";
+			  pre = con.prepareStatement(sql);
+			  pre.setString(1, newFamily);
+			  pre.setString(2, oldFamily);
+			  pre.executeUpdate();
+			  return true;
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+			  return false;
+		  }
+		  finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	  }
 }

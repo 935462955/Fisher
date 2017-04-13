@@ -7,17 +7,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Fisher</title>
 <% 
-String categoryName;
+String categoryName = "";
+String listName = ""; 
+String familyName = "";
 if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("categoryName")!=null){
+	listName = (String)session.getAttribute("listName");
+	familyName = (String)session.getAttribute("familyName");
 	categoryName = request.getParameter("categoryName");
     session.setAttribute("categoryName", categoryName);
 }
 else{
-	if(session.getAttribute("categoryName") != null)
+	if(session.getAttribute("categoryName") != null){
 		categoryName = (String)session.getAttribute("categoryName");
+	    listName = (String)session.getAttribute("listName");
+	   familyName = (String)session.getAttribute("familyName");
+	}
 		else{
-			categoryName = "";
 		  response.sendRedirect("main.jsp");
 		}
 }
@@ -33,11 +39,12 @@ else{
 	margin-top:30px;
 }
 </style>
-<body>
-<div class="container">
-  <div>
-    <h1>淡水鱼百科</h1>
+<body style="background-image:url(img/background.gif);">
+<div style="width:1250px;margin:10px auto;  ">
+    <img src="img/title.png"/>
   </div>
+<div class="container" style="margin:0 auto; width:1250px; background:#fff; border-radius:15px;">
+  
   <div class="path row clearfix">
     <div class="col-md-12 column">
       <ul class="breadcrumb">
@@ -75,9 +82,60 @@ else{
           </span> </div>
       </form>
     </div>
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加鱼种</h4>
+            </div>
+            <div class="modal-body">
+            <form role="form" id="form1" action="UploadServlet" enctype="multipart/form-data" method="post">
+            <span ><%out.print(listName); %></span>
+            <input type="hidden" id="list" name="list" value="<%out.print(listName);%>"/>
+            <span ><%out.print(familyName);%></span><!-- 保存当前目名 -->
+             <input type="hidden" id="family" name="family" value="<%out.print(familyName);%>"/>
+            <span><%out.print(categoryName); %></span>
+             <input type="hidden" id="category" name="category" value="<%out.print(categoryName);%>" />
+            <br/>
+            <div class="form-group">
+					 <label for="exampleInputEmail1">名称</label><input class="form-control" id="fishName" name="name" type="text" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1">别名(若有多个别名请用逗号隔开)</label><input class="form-control" id="localName" name="localName" type="text"  />
+				</div>
+                <div class="form-group">
+					 <label for="exampleInputEmail1">英文名</label><input class="form-control" id="EnglishName" name="EnglishName" type="text" />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputEmail1">发源地</label><input class="form-control" id="origin" name="origin" type="text"  />
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputEmail1">介绍</label><textarea class="form-control" id="introduction" name="introduction"></textarea>
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputFile">图片</label><input name="file1" type="file" />
+				</div>
+				</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onClick="beforeSubmit()" id="insertSubmit" class="btn btn-primary">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
   </div>
+  </div>
+  <div class="row clearfix">
+  <div class="col-md-12 column">
+  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
+  <button style="margin:30px 10px 0px 0px;" type="button"  data-toggle="modal" data-target="#insertModal" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
+  </div>
+  </div>
+  <div class="row clearfix" style="margin-top:10px; text-align:center;">	
   <% Vector<Fish> f = new FishDao().getFishsByCate(categoryName);
      Fish fish = null;
+     if(f.size() > 0){
      for(int i = 0 ; i < f.size() ; i++){
     	 if(f.get(i) != null){
          fish = f.get(i);
@@ -88,10 +146,21 @@ else{
     	 out.println(fish.getIntroduction());
     	 out.println("</p>");
     	 out.println("<p><a href=\"fishDetail.jsp?fishName="+fish.getName()+"\">查看详情>></a></p>");
+    	 out.println("<button style=\"display:none\" type=\"button\" onClick=\"Del(this,'fish')\" class=\"btn btn-danger btn-xs btn-delete\">删除</button>"
+    	 +"<button onClick=\"getUpdateVal(this,"+i+")\" style=\"display:none\" type=\"button\" class=\"btn btn-primary btn-xs btn-update\" data-toggle=\"modal\" data-target=\"#updateModal\">更改</button>");
     	 out.println("</div>");
+    	 
     	 }
     	 }
+     }
+     else{
+         out.println("<div class=\"col-md-12 column unit\">");
+         out.println("<p style=\"height:200px;\">抱歉！暂无结果</p>");
+         out.println("</div>");
+         }
   %>
 	</div>
+	</div>
+	<span style="text-align:center; display:block; width:900px;margin:50px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
 </body>
 </html>

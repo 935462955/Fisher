@@ -153,4 +153,37 @@ public class ListDao {
 		  }
 	  }
   }
+  
+  public boolean UpdateList(String newList,String oldList){
+	  Connection con = null;
+	  PreparedStatement pre = null;
+	  try{
+		  con = new DataBase().getConnection();
+		  String sql = "update list set list = ? where list = ?";
+		  pre = con.prepareStatement(sql);
+		  pre.setString(1, newList);
+		  pre.setString(2, oldList);
+		  pre.executeUpdate();
+		  return true;
+	  }
+	  catch(Exception e){
+		  e.printStackTrace();
+		  return false;
+	  }
+	  finally{
+		  try {
+	  
+		  if(pre != null){
+ 			pre.close();
+			
+		  }
+		  if(con != null){
+			  con.close();
+		  }
+		  }
+		  catch(Exception e){
+			  e.printStackTrace();
+		  }
+	  }
+  }
 }

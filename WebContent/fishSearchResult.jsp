@@ -17,11 +17,12 @@
 	margin-top:30px;
 }
 </style>
-<body>
-<div class="container">
-  <div>
-    <h1>淡水鱼百科</h1>
+<body style="background-image:url(img/background.gif);">
+<div style="width:1250px;margin:10px auto;  ">
+    <img src="img/title.png"/>
   </div>
+<div class="container"  style="margin:0 auto; width:1250px; background:#fff; border-radius:15px;">
+  
   <div class="path row clearfix">
     <div class="col-md-12 column">
       <ul class="breadcrumb">
@@ -55,7 +56,9 @@
       </form>
     </div>
   </div>
+  <div class="row clearfix" style="margin-top:10px; text-align:center;">
   <% Vector<Fish> f = (Vector<Fish>)request.getSession().getAttribute("searchReturn");
+     if(f.size() > 0){
      Fish fish = null;
      for(int i = 0 ; i < f.size() ; i++){
     	 if(f.get(i) != null){
@@ -70,7 +73,15 @@
     	 out.println("</div>");
     	 }
     	 }
+     }
+     else{
+    	  out.println("<div class=\"col-md-12 column unit\">");
+          out.println("<p style=\"height:200px;\">抱歉！暂无结果</p>");
+          out.println("</div>");
+     }
   %>
+  </div>
 	</div>
+	<span style="text-align:center; display:block; width:900px;margin:50px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
 </body>
 </html>

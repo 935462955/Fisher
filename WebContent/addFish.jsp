@@ -119,44 +119,7 @@ function change2(x){
 	  xmlhttp.send();
 
 	}
-function beforeSubmit(){
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }
-	else
-	  {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-	  xmlhttp.onreadystatechange=function()
-	  {
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	    { 
-		
-	    var x=xmlhttp.responseText;
-	    if(x == "false")
-	    	alert("数据已存在！");
-	    else if(x == "")alert("名称不能为空!");
-	    else if($("#list").val() =="") alert("目不能为空!");
-	    else if($("#family").val() =="") alert("科不能为空!");
-	    else if($("#category").val() =="") alert("属不能为空!");
-	    else{
-	    	if($("#localName").val() =="")
-	    		$("#localName").val("无");
-	    	if($("#EnglishName").val() =="")
-	    		$("#EnglishName").val("无");
-	    	if($("#origin").val() == "")
-	    		$("#origin").val("无");
-	    	if($("#introduction").val() == "")
-	    		$("#introduction").val("无");
-	    	 $("#form1").submit();
-	    }
-	    }
-	  }
-	  xmlhttp.open("GET","CheckDuplicate?value="+$("#fishName").val()+"&type=fish",true);
-	  xmlhttp.send();
-}	
+	
 function fill1(x){
 	var val = x.innerHTML;
 	$("#family").attr("value",val);
@@ -554,9 +517,7 @@ function fill2(x){
 				</div>
 				<div class="form-group">
 					 <label for="exampleInputFile">图片</label><input name="file1" type="file" />
-					<p class="help-block">
-						Example block-level help text here.
-					</p>
+					
 				</div>
 				<div class="checkbox">
 					 <label><input type="checkbox" />Check me out</label>
