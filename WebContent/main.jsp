@@ -6,13 +6,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <% int currentPage;
+   int sumList;
+   String character;
    if(request.getParameter("page") == null) 
    currentPage = 1;
    else
    currentPage = Integer.parseInt(request.getParameter("page").toString());
-
+   if(request.getParameter("character") == null)
+	   character = "All";
+   else
+   character = request.getParameter("character");
+   String userType = "common";
+   if(session.getAttribute("userType")!=null)
+   userType = (String)session.getAttribute("userType");
    ListDao listDao = new ListDao();
-   int sumList = listDao.getSumListNum();
+   if(character.equals("All"))
+   sumList = listDao.getSumListNum();
+   else 
+   sumList = listDao.getSumListPYNum(character);
    final int PAGENUM = 30;
    final int COWNUM = 3;
    int sumPage;
@@ -64,6 +75,20 @@
           <button class="btn btn-primary" type="button" onClick="submit1()">搜索</button>
           </span> </div>
       </form>
+      <ul id="navigateUl" class="nav nav-pills" style="margin:20px auto 0 auto;width:68%;">
+                <%if(character.equals("All"))
+				out.println("<li  class=\"active\"><a href=\"main.jsp?page=1&character=All\">All</a></li>");
+                else
+                out.println("<li  ><a href=\"main.jsp?page=1&character=All\">All</a></li>");
+				%>
+				<%
+				for(int i = 'A';i <= 'Z'; i++){
+			    if(character.equals(String.valueOf((char)i)))
+				out.println("<li class=\"active\"><a href=\"main.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+			    else
+			    	out.println("<li><a href=\"main.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+				}%>			
+      </ul>
     </div>
   </div>
   <!-- update模态框 -->
@@ -105,13 +130,21 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-  <% Vector <List>list = new ListDao().getListByPage(currentPage, PAGENUM); %>
-  <div class="row clearfix">
-  <div class="col-md-12 column">
-  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
-  <button style="margin:30px 10px 0px 0px;" type="button"  data-toggle="modal" data-target="#insertModal" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
-  </div>
-  </div>
+  <%
+  Vector <List>list;
+  if(character.equals("All"))
+  list = listDao.getListByPage(currentPage, PAGENUM);
+  else
+  list = listDao.getListByPinYin(character, currentPage, PAGENUM);
+  %>
+  <% if(userType.equals("admin")){
+  out.println("<div class=\"row clearfix\">");
+  out.println("<div class=\"col-md-12 column\">");
+  out.println("<button  onClick=\"editModeChange(this)\" style=\"margin-top:30px\" type=\"button\" class=\"btn btn-sm btn-primary\">编辑 <span class=\"glyphicon glyphicon-pencil\"></span></button>");
+  out.println("<button style=\"margin:30px 10px 0px 0px;\" type=\"button\"  data-toggle=\"modal\" data-target=\"#insertModal\" class=\"btn btn-sm btn-success\">添加<span class=\"glyphicon glyphicon-plus\"></span></button>");
+  out.println("</div></div>");
+  }
+  %>
   <div class="row clearfix" style="margin-top:10px; text-align:center;">
     <div class="col-md-4 column">
       <div class="page-header">
@@ -178,7 +211,8 @@ out.println("<li><a href=\"main.jsp?page="+sumPage+"\">&raquo;</a></li>");
     </div>
   </div>
 </div>
-<span style="text-align:center; display:block; width:900px;margin:50px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
+<span style="text-align:center; display:block; width:900px;margin:50px auto 10px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
+<span style="text-align:center;display:block;width:900px; margin:0px auto 50px auto;"><a href="admin.jsp">管理员登录</a></span>
 </body>
 
 </html>

@@ -9,7 +9,13 @@
 </title>
 <% 
 request.setCharacterEncoding("UTF-8");
+int currentPage;
+int sumFamily;
 String listName;
+String character;
+String userType = "common";
+if(session.getAttribute("userType")!=null)
+userType = (String)session.getAttribute("userType");
 if(request.getParameter("list")!=null){
 listName = request.getParameter("list");
 session.setAttribute("listName", listName);
@@ -23,14 +29,20 @@ else{
 	}
 		
 }
-int currentPage;
+if(request.getParameter("character") == null)
+	   character = "All";
+else
+character = request.getParameter("character");
+FamilyDao familyDao = new FamilyDao();
+if(character.equals("All"))
+sumFamily = familyDao.getSumFamilyNum(listName);
+else 
+sumFamily = familyDao.getSumFamilyPYNum(character,listName);
+
 if(request.getParameter("page") == null) 
 currentPage = 1;
 else
 currentPage = Integer.parseInt(request.getParameter("page").toString());
-
-
-int sumFamily = new FamilyDao().getSumFamilyNum(listName);
 final int PAGENUM = 30;
 final int COWNUM = 3;
 int sumPage;
@@ -84,6 +96,20 @@ else sumPage = sumFamily/PAGENUM + 1;
           <button class="btn btn-primary" type="button" onClick="submit1()">搜索</button>
           </span> </div>
       </form>
+       <ul id="navigateUl" class="nav nav-pills" style="margin:20px auto 0 auto;width:68%;">
+                <%if(character.equals("All"))
+				out.println("<li  class=\"active\"><a href=\"family.jsp?page=1&character=All\">All</a></li>");
+                else
+                out.println("<li  ><a href=\"family.jsp?page=1&character=All\">All</a></li>");
+				%>
+				<%
+				for(int i = 'A';i <= 'Z'; i++){
+			    if(character.equals(String.valueOf((char)i)))
+				out.println("<li class=\"active\"><a href=\"family.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+			    else
+			    	out.println("<li><a href=\"family.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+				}%>			
+      </ul>
     </div>
     <!-- update模态框 -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -125,13 +151,19 @@ else sumPage = sumFamily/PAGENUM + 1;
     </div><!-- /.modal -->
 </div>
   </div>
-  <% Vector <Family>family = new FamilyDao().getFamilyByPage(listName,currentPage,PAGENUM);%>
-  <div class="row clearfix">
-  <div class="col-md-12 column">
-  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
-  <button style="margin:30px 10px 0px 0px;" type="button"  data-toggle="modal" data-target="#insertModal" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
-  </div>
-  </div>
+  <%  Vector <Family>family;
+  if(character.equals("All"))
+   family= familyDao.getFamilyByPage(listName,currentPage, PAGENUM);
+  else
+  family = familyDao.getFamilyByPinYin(character,listName, currentPage, PAGENUM);%>
+    <% if(userType.equals("admin")){
+  out.println("<div class=\"row clearfix\">");
+  out.println("<div class=\"col-md-12 column\">");
+  out.println("<button  onClick=\"editModeChange(this)\" style=\"margin-top:30px\" type=\"button\" class=\"btn btn-sm btn-primary\">编辑 <span class=\"glyphicon glyphicon-pencil\"></span></button>");
+  out.println("<button style=\"margin:30px 10px 0px 0px;\" type=\"button\"  data-toggle=\"modal\" data-target=\"#insertModal\" class=\"btn btn-sm btn-success\">添加<span class=\"glyphicon glyphicon-plus\"></span></button>");
+  out.println("</div></div>");
+  }
+  %>
   <div class="row clearfix" style="margin-top:10px; text-align:center;">
     <div class="col-md-4 column">
       <div class="page-header">

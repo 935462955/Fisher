@@ -28,10 +28,10 @@ public class TestTools {
 //      System.out.println(string[i]);
 	
 	
-//	Vector<List> x = new ListDao().getListByPage(1, 10);
-//	for(List l:x){
-//		System.out.println(l.getName());
-//	}
+	Vector<List> x = new ListDao().getListByPinYin("D", 1, 10);
+	for(List l:x){
+		System.out.println(l.getName());
+	}
 //      FishDao d = new FishDao();
 //		System.out.println(d.getSumCateNum("öÙ¿Æ"));
 	    
@@ -47,11 +47,11 @@ public class TestTools {
 //}
 //String encoding = System.getProperty("file.encoding");
 //System.out.println(encoding);
-	 File picture = new File("C:\\Users\\liu\\Pictures\\415637.jpg");  
-     BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture));   
-     System.out.println(String.format("%.1f",picture.length()/1024.0));  
-     System.out.println(sourceImg.getWidth());  
-     System.out.println(sourceImg.getHeight());  
+//	 File picture = new File("C:\\Users\\liu\\Pictures\\415637.jpg");  
+//     BufferedImage sourceImg =ImageIO.read(new FileInputStream(picture));   
+//     System.out.println(String.format("%.1f",picture.length()/1024.0));  
+//     System.out.println(sourceImg.getWidth());  
+//     System.out.println(sourceImg.getHeight());  
 
 }
 }

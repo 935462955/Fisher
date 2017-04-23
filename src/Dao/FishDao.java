@@ -11,10 +11,12 @@ import entity.Fish;
 public class FishDao {
 	    
 	    public Fish getFishByName(String name){
+	    	 Connection con = null;
+	   	     PreparedStatement pre = null;
 	    	try{
-	    	Connection con = new DataBase().getConnection();
+	    	con = new DataBase().getConnection();
 	    	String sql = "select * from fish where name = ?";
-	    	PreparedStatement pre = con.prepareStatement(sql);
+	    	pre = con.prepareStatement(sql);
 	    	pre.setString(1,name);
 	    	ResultSet result = pre.executeQuery();
 	    	Fish fish = null;
@@ -54,14 +56,31 @@ public class FishDao {
 	    		e.printStackTrace();
 	    		return null;
 	    	}
+	    	finally{
+  			  try {
+  		  
+  			  if(pre != null){
+  	 			pre.close();
+  				
+  			  }
+  			  if(con != null){
+  				  con.close();
+  			  }
+  			  }
+  			  catch(Exception e){
+  				  e.printStackTrace();
+  			  }
+  		  }
 	    }
 	     
        public Vector<Fish> getFishsByCate(String categoryName){
     	   Vector<Fish> f = new Vector<>();
+    	   Connection con = null;
+    	   PreparedStatement pre = null;
     	   try{
-   	    	Connection con = new DataBase().getConnection();
+   	    	con = new DataBase().getConnection();
    	    	String sql = "select * from fish where category = ? ";
-   	    	PreparedStatement pre = con.prepareStatement(sql);
+   	    	 pre = con.prepareStatement(sql);
    	    	pre.setString(1, categoryName);
    	 	    ResultSet result = pre.executeQuery();
    	 	        Fish fish = null;
@@ -94,6 +113,21 @@ public class FishDao {
     		   e.printStackTrace();
     		   return f;
     	   }
+    	   finally{
+ 			  try {
+ 		  
+ 			  if(pre != null){
+ 	 			pre.close();
+ 				
+ 			  }
+ 			  if(con != null){
+ 				  con.close();
+ 			  }
+ 			  }
+ 			  catch(Exception e){
+ 				  e.printStackTrace();
+ 			  }
+ 		  }
        }
        
        public void insertFish(Fish fish){
@@ -134,6 +168,7 @@ public class FishDao {
     			  e.printStackTrace();
     		  }
     	  }
+    	  
        }
        
        public String getListByPinYin(String word){
@@ -156,6 +191,21 @@ public class FishDao {
     		   e.printStackTrace();
     		   return s;
     	   }
+    	   finally{
+ 			  try {
+ 		  
+ 			  if(pre != null){
+ 	 			pre.close();
+ 				
+ 			  }
+ 			  if(con != null){
+ 				  con.close();
+ 			  }
+ 			  }
+ 			  catch(Exception e){
+ 				  e.printStackTrace();
+ 			  }
+ 		  }
        }
        
        public String getFamilyByPinYin(String word,String list){
@@ -179,6 +229,21 @@ public class FishDao {
     		   e.printStackTrace();
     		   return s;
     	   }
+    	   finally{
+ 			  try {
+ 		  
+ 			  if(pre != null){
+ 	 			pre.close();
+ 				
+ 			  }
+ 			  if(con != null){
+ 				  con.close();
+ 			  }
+ 			  }
+ 			  catch(Exception e){
+ 				  e.printStackTrace();
+ 			  }
+ 		  }
        }
        
        public String getCategoryByPinYin(String word,String family){
@@ -203,13 +268,120 @@ public class FishDao {
     		   e.printStackTrace();
     		   return s;
     	   }
+    	   finally{
+ 			  try {
+ 		  
+ 			  if(pre != null){
+ 	 			pre.close();
+ 				
+ 			  }
+ 			  if(con != null){
+ 				  con.close();
+ 			  }
+ 			  }
+ 			  catch(Exception e){
+ 				  e.printStackTrace();
+ 			  }
+ 		  }
        }
+       
+   	public Vector<Fish> getFishByPinYin(String word,String categoryName){
+		   Vector<Fish> f = new Vector<>();
+		   Connection con = null;
+		   PreparedStatement pre = null;
+		   try{
+			   con = new DataBase().getConnection();
+			   String sql ="select name,introduction,picture from"
+		+"(select f_pinyin(name) py,name,introduction,picture from fish where category = ?) "+ 
+		"where py like ?" ;
+			   pre = con.prepareStatement(sql);
+			   pre.setString(1,categoryName);
+			   pre.setString(2, word+"%");
+			 
+			   ResultSet result = pre.executeQuery();
+			   Fish fish = null;
+  	    		while(result.next()){
+  	 	    	fish = new Fish();
+  	 	    	fish.setName(result.getString("name"));
+  	 	    	
+  	 	        if(result.getString("introduction")!=null)
+  	 	    	fish.setIntroduction(result.getString("introduction"));
+  	 	        else fish.setIntroduction(" ");
+  	 	        if(result.getString("picture")!=null)
+  	 	    	fish.setPicture(result.getString("picture"));
+  	 	        else fish.setPicture("img\timg.gif");
+  	 	        f.add(fish);
+  	    		}
+		    	return f;
+			
+		   }
+		   catch(Exception e){
+			   e.printStackTrace();
+			   return f;
+		   }
+		   finally{
+				  try {
+			  
+				  if(pre != null){
+					pre.close();
+					
+				  }
+				  if(con != null){
+					  con.close();
+				  }
+				  }
+				  catch(Exception e){
+					  e.printStackTrace();
+				  }
+			  }
+		}
+	
+	public int getSumFamilyPYNum(String word,String listName){
+		Connection con = null;
+		PreparedStatement pre = null;
+		try{
+		int sum = 0;
+		 con = new DataBase().getConnection();
+		String sql = "select count(family) sum from(select f_pinyin(family) py,family from family where list = ? ) where py like ?";
+		 pre = con.prepareStatement(sql);
+		 pre.setString(1,listName);
+		 pre.setString(2,word+"%");
+		ResultSet result = pre.executeQuery();
+		if(result.next())
+	   sum = result.getInt("sum");
+		return sum;
+		
+		}
+		catch(Exception e){
+		
+			e.printStackTrace();	
+			return -1;
+		}
+		finally{
+			  try {
+		  
+			  if(pre != null){
+				pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	}
+       
        public Vector<Fish> getFishByKeyWord(String keyWord){
     	   Vector<Fish> v = new Vector<>();
+    	   Connection con = null;
+    		  PreparedStatement pre = null;
  		  try{
- 			  Connection con = new DataBase().getConnection();
+ 			   con = new DataBase().getConnection();
  			  String sql ="  select * from fish where contains(name,?)>0 or contains(englishname,?)>0 or contains(localname,?)>0";
- 			  PreparedStatement pre = con.prepareStatement(sql);
+ 			  pre = con.prepareStatement(sql);
  			  pre.setString(1, keyWord);
  			  pre.setString(2, "%"+keyWord+"%");
  			  pre.setString(3, keyWord);
@@ -233,7 +405,22 @@ public class FishDao {
  		  catch(Exception e){
  			  e.printStackTrace();
  			  return v;
- 		  }  	   
+ 		  }
+ 		 finally{
+			  try {
+		  
+			  if(pre != null){
+	 			pre.close();
+				
+			  }
+			  if(con != null){
+				  con.close();
+			  }
+			  }
+			  catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
        }
        
        public boolean DeleteFish(String fishName){

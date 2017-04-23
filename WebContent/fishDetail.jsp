@@ -8,6 +8,9 @@
 <title>Fisher</title>
 <%
 String fishName;
+String userType = "common";
+if(session.getAttribute("userType")!=null)
+userType = (String)session.getAttribute("userType");
 if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("fishName")!=null){
 	fishName = request.getParameter("fishName");
@@ -32,12 +35,18 @@ else{
 .unit{
 	margin-top:30px;
 }
+dl dt{
+margin-bottom:10px;
+}
+dl dd{
+margin-bottom:10px;
+}
 </style>
-<body>
-<div class="container">
-  <div>
-    <h1>淡水鱼百科</h1>
+<body  style="background-image:url(img/background.gif);">
+<div style="width:900px;margin:10px auto;  ">
+    <img src="img/title.png"/>
   </div>
+<div class="container" style="margin:0 auto; width:900px; background:#fff; border-radius:15px;"> 
   <div class="path row clearfix">
     <div class="col-md-12 column">
      <ul class="breadcrumb">
@@ -81,13 +90,14 @@ else{
     %>
 		<div class="col-md-12 column">
 			<h2 class="text-center">
-			   <% fish.getName(); %>
-			</h2><img style="position:relative;left:35%;width:300px;height:300px;"alt="140x140" src="<% out.println(fish.getPicture()); %>" />
-			<dl  class="dl-horizontal">
+			   <% out.println(fish.getName()); %>
+			</h2><img style="position:relative;left:33.5%;border-radius:15px; width:300px;height:300px;"alt="140x140" src="/upload/<% out.println(fish.getPicture()); %>" />
+			<dl  class="dl-horizontal" style="margin-top:30px; font-size:20px; font-family:Arial,Microsoft,YaHei,'黑体','宋体',sans-serif">
 				<dt>
 					别名
 				</dt>
 				<dd>
+				
 					<% out.println(fish.getLocalNameByString()); %>
 				</dd>
 				<dt>
@@ -110,15 +120,15 @@ else{
 				</dd>
 			</dl>
 			<h2>
-				介绍
+				简介
 			</h2>
-			<p>
+			<p style="font-size:20px;font-family:Arial,Microsoft,YaHei,'黑体','宋体',sans-serif; margin-bottom:50px;">
 			<% out.println(fish.getIntroduction()); %>
-
-
 			</p>
 		</div>
 
 	</div>
+	</div>
+	<span style="text-align:center; display:block; width:900px;margin:50px auto;">Copyright © 2017 - 2020 鱼的特征与分类信息管理系统  F	isher.com All Rights Reserved.  </span>
 </body>
 </html>

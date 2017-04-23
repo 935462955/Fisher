@@ -29,7 +29,7 @@ import entity.Fish;
  */
 @WebServlet("/UploadServlet")
 public class UploadServlet extends HttpServlet {
-	public final String DEFAULTPATH = "C:\\Users\\liu\\Pictures\\fisher\\no.jpg";
+	public final String DEFAULTPATH = "no.jpg";
 	private static final long serialVersionUID = 1L;
 	private String Ext_Name = "jpg,png,bmp";
 
@@ -49,8 +49,8 @@ public class UploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	
-		  String savePath = this.getServletContext().getRealPath("img");
-		 // String savePath = "C:\\Users\\liu\\Pictures\\fisher";
+		  //String savePath = this.getServletContext().getRealPath("../../upload");
+		  String savePath = "E:\\Fisher\\img";
 		System.out.println(savePath);
 		File saveFileDir = new File(savePath);
 		if (!saveFileDir.exists()) {
@@ -208,11 +208,11 @@ public class UploadServlet extends HttpServlet {
 			e.printStackTrace();
 		} finally {
 			FishDao fishdao = new FishDao();
-			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,saveFileName == ""?DEFAULTPATH:savePath+"\\"+saveFileName,list,family,category);
+			Fish fish = new Fish(fishName,localName,englishName,origin,introduction,saveFileName == ""?DEFAULTPATH:saveFileName,list,family,category);
 			fishdao.insertFish(fish);
 			request.setAttribute("message", message);
 			request.setAttribute("path","img\\"+saveFileName);
-			request.getRequestDispatcher("/message.jsp").forward(request, response);
+			response.sendRedirect("fishMenu.jsp");
 		}
 	}
 

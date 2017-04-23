@@ -10,6 +10,10 @@ function switchValue(x){
 	$("#btn-type").attr("value",va);
 }
 
+function change(x){
+	$("#navigateUl li.active").removeClass("active");
+	x.setAttribute("class","active");
+}
 function submit1(){
 	$("#typeId").attr("value",$("#btn-type").attr("value"));
 	$(".form1").submit();

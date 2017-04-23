@@ -64,7 +64,7 @@
     	 if(f.get(i) != null){
          fish = f.get(i);
     	 out.println("<div class=\"col-md-4 column unit\">");
-    	 out.println("<a href=\"fishDetail.jsp?fishName="+fish.getName()+"\"><img class=\"img-rounded\" alt=\"200x200\" src=\""+fish.getPicture()+"\" width=\"200px\" height=\"200px\" /></a>");
+    	 out.println("<a href=\"fishDetail.jsp?fishName="+fish.getName()+"\"><img class=\"img-rounded\" alt=\"200x200\" src=\"/upload/"+fish.getPicture()+"\" width=\"200px\" height=\"200px\" /></a>");
     	 out.println("<h2>"+fish.getName()+"</h2>");
     	 out.println("<p style=\"height:100px; width:350px;overflow:hidden;text-overflow:ellipsis;\">");
     	 out.println(fish.getIntroduction());

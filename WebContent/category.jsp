@@ -8,7 +8,13 @@
 <title>Fisher
 </title>
 <% 
+int currentPage;
+int sumFamily;
+String character;
 String familyName;
+String userType = "common";
+if(session.getAttribute("userType")!=null)
+userType = (String)session.getAttribute("userType");
 if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("familyName")!=null){
 familyName = request.getParameter("familyName");
@@ -22,14 +28,20 @@ else{
 		  response.sendRedirect("main.jsp");
 		}
 }
-int currentPage;
 if(request.getParameter("page") == null) 
 currentPage = 1;
 else
 currentPage = Integer.parseInt(request.getParameter("page").toString());
+if(request.getParameter("character") == null)
+	   character = "All";
+else
+character = request.getParameter("character");
+CateDao categoryDao = new CateDao();
+if(character.equals("All"))
+sumFamily = categoryDao.getSumCateNum(familyName);
+else 
+sumFamily = categoryDao.getSumCategoryPYNum(character,familyName);
 
-
-int sumFamily = new CateDao().getSumCateNum(familyName);
 final int PAGENUM = 30;
 final int COWNUM = 3;
 int sumPage;
@@ -85,6 +97,20 @@ else sumPage = sumFamily/PAGENUM + 1;
           <button class="btn btn-primary" type="button" onClick="submit1()">搜索</button>
           </span> </div>
       </form>
+      <ul id="navigateUl" class="nav nav-pills" style="margin:20px auto 0 auto;width:68%;">
+                <%if(character.equals("All"))
+				out.println("<li  class=\"active\"><a href=\"category.jsp?page=1&character=All\">All</a></li>");
+                else
+                out.println("<li  ><a href=\"category.jsp?page=1&character=All\">All</a></li>");
+				%>
+				<%
+				for(int i = 'A';i <= 'Z'; i++){
+			    if(character.equals(String.valueOf((char)i)))
+				out.println("<li class=\"active\"><a href=\"category.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+			    else
+			    	out.println("<li><a href=\"category.jsp?page=1&character="+(char)i+"\">"+(char)i+"</a></li>"); 
+				}%>			
+      </ul>
     </div>
       <!-- update模态框 -->
   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -126,13 +152,19 @@ else sumPage = sumFamily/PAGENUM + 1;
     </div><!-- /.modal -->
   </div>
   </div>
-  <% Vector <Category>category = new CateDao().getCateByPage(familyName,currentPage,PAGENUM);%>
-  <div class="row clearfix">
-  <div class="col-md-12 column">
-  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
-  <button style="margin:30px 10px 0px 0px;" type="button"  data-toggle="modal" data-target="#insertModal" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
-  </div>
-  </div>
+  <% Vector <Category>category;
+  if(character.equals("All"))
+	  category= categoryDao.getCateByPage(familyName,currentPage, PAGENUM);
+	  else
+		  category = categoryDao.getCategoryByPinYin(character,familyName, currentPage, PAGENUM);%>
+   <% if(userType.equals("admin")){
+  out.println("<div class=\"row clearfix\">");
+  out.println("<div class=\"col-md-12 column\">");
+  out.println("<button  onClick=\"editModeChange(this)\" style=\"margin-top:30px\" type=\"button\" class=\"btn btn-sm btn-primary\">编辑 <span class=\"glyphicon glyphicon-pencil\"></span></button>");
+  out.println("<button style=\"margin:30px 10px 0px 0px;\" type=\"button\"  data-toggle=\"modal\" data-target=\"#insertModal\" class=\"btn btn-sm btn-success\">添加<span class=\"glyphicon glyphicon-plus\"></span></button>");
+  out.println("</div></div>");
+  }
+  %>
   <div class="row clearfix" style="margin-top:10px; text-align:center;">
     <div class="col-md-4 column">
       <div class="page-header">

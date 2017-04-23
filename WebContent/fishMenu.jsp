@@ -10,6 +10,10 @@
 String categoryName = "";
 String listName = ""; 
 String familyName = "";
+String userType = "common";
+String character;
+if(session.getAttribute("userType")!=null)
+userType = (String)session.getAttribute("userType");
 if(session.getAttribute("listName") == null)  response.sendRedirect("main.jsp");
 if(request.getParameter("categoryName")!=null){
 	listName = (String)session.getAttribute("listName");
@@ -27,6 +31,10 @@ else{
 		  response.sendRedirect("main.jsp");
 		}
 }
+if(request.getParameter("character") == null)
+	   character = "All";
+else
+character = request.getParameter("character");
 %>
 </head>
 <link href="bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -81,6 +89,20 @@ else{
           <button class="btn btn-primary" type="button" onClick="submit1()">搜索</button>
           </span> </div>
       </form>
+      <ul id="navigateUl" class="nav nav-pills" style="margin:20px auto 0 auto;width:100%;">
+                <%if(character.equals("All"))
+				out.println("<li  class=\"active\"><a href=\"fishMenu.jsp?character=All\">All</a></li>");
+                else
+                out.println("<li  ><a href=\"fishMenu.jsp?character=All\">All</a></li>");
+				%>
+				<%
+				for(int i = 'A';i <= 'Z'; i++){
+			    if(character.equals(String.valueOf((char)i)))
+				out.println("<li class=\"active\"><a href=\"fishMenu.jsp?character="+(char)i+"\">"+(char)i+"</a></li>"); 
+			    else
+			    	out.println("<li><a href=\"fishMenu.jsp?character="+(char)i+"\">"+(char)i+"</a></li>"); 
+				}%>			
+      </ul>
     </div>
     <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -126,21 +148,27 @@ else{
     </div><!-- /.modal -->
   </div>
   </div>
-  <div class="row clearfix">
-  <div class="col-md-12 column">
-  <button  onClick="editModeChange(this)" style="margin-top:30px" type="button" class="btn btn-sm btn-primary">编辑 <span class="glyphicon glyphicon-pencil"></span></button>
-  <button style="margin:30px 10px 0px 0px;" type="button"  data-toggle="modal" data-target="#insertModal" class="btn btn-sm btn-success">添加<span class="glyphicon glyphicon-plus"></span></button>
-  </div>
-  </div>
+   <% if(userType.equals("admin")){
+  out.println("<div class=\"row clearfix\">");
+  out.println("<div class=\"col-md-12 column\">");
+  out.println("<button  onClick=\"editModeChange(this)\" style=\"margin-top:30px\" type=\"button\" class=\"btn btn-sm btn-primary\">编辑 <span class=\"glyphicon glyphicon-pencil\"></span></button>");
+  out.println("<button style=\"margin:30px 10px 0px 0px;\" type=\"button\"  data-toggle=\"modal\" data-target=\"#insertModal\" class=\"btn btn-sm btn-success\">添加<span class=\"glyphicon glyphicon-plus\"></span></button>");
+  out.println("</div></div>");
+  }
+  %>
   <div class="row clearfix" style="margin-top:10px; text-align:center;">	
-  <% Vector<Fish> f = new FishDao().getFishsByCate(categoryName);
+  <%  Vector <Fish>f;
+  if(character.equals("All"))
+	   f = new FishDao().getFishsByCate(categoryName);
+	  else
+	   f = new FishDao().getFishByPinYin(character,categoryName);
      Fish fish = null;
      if(f.size() > 0){
      for(int i = 0 ; i < f.size() ; i++){
     	 if(f.get(i) != null){
          fish = f.get(i);
-    	 out.println("<div class=\"col-md-4 column unit\">");
-    	 out.println("<a href=\"fishDetail.jsp?fishName="+fish.getName()+"\"><img class=\"img-rounded\" alt=\"200x200\" src=\""+fish.getPicture()+"\" width=\"200px\" height=\"200px\" /></a>");
+    	 out.println("<div class=\"col-md-4 column unit\">");                                                                //upload为TOMCAT server.xml <host>里手动配置的虚拟地址映射 ，映射到对应的物理地址
+    	 out.println("<a href=\"fishDetail.jsp?fishName="+fish.getName()+"\"><img class=\"img-rounded\" alt=\"200x200\" src=\"/upload/"+fish.getPicture()+"\" width=\"200px\" height=\"200px\" /></a>");
     	 out.println("<h2>"+fish.getName()+"</h2>");
     	 out.println("<p style=\"height:100px; width:350px;overflow:hidden;text-overflow:ellipsis;\">");
     	 out.println(fish.getIntroduction());

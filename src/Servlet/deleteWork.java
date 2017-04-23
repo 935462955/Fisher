@@ -21,7 +21,7 @@ import Tools.Tool;
 @WebServlet("/deleteWork")
 public class deleteWork extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private final String DIRECTORY = "E:\\Fisher\\img\\";   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -59,7 +59,9 @@ public class deleteWork extends HttpServlet {
         	String fileURL = request.getParameter("fileURL");
         	fileURL = fileURL.replace('/', '\\');
         	if(!fileURL.substring(fileURL.lastIndexOf('\\')+1).equals("no.jpg")){//如果不是系统默认图片则删除图片
-        	//System.out.println(fileURL);
+        	fileURL = fileURL.substring(fileURL.lastIndexOf('\\')+1);
+        	fileURL = DIRECTORY+fileURL ;
+        	System.out.println(fileURL);
         	Tool tool = new Tool();
         	if(!tool.DeleteFile(fileURL))
         		System.out.println("图片删除失败请手动删除！");
